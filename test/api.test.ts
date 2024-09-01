@@ -32,10 +32,10 @@ import {TestAnimal, TestCategory, TestSpecies} from './testTypes';
 
 describe('GET /api/v1', () => {
   beforeAll(async () => {
-    if (!process.env.TEST_URL) {
-      throw new Error('TEST_URL is not defined');
+    if (!process.env.DB_URL) {
+      throw new Error('DB_URL is not defined');
     }
-    await mongoose.connect(process.env.TEST_URL);
+    await mongoose.connect(process.env.DB_URL);
   });
 
   afterAll(async () => {
@@ -207,25 +207,26 @@ describe('GET /api/v1', () => {
     await getaAnimalsBySpecies(app, newSpeciesName);
   });
 
-  // // delete test data
-  // it('Should delete a category', async () => {
-  //   if (Array.isArray(categoryResponse.data)) {
-  //     return;
-  //   }
-  //   await deleteCategory(app, categoryResponse.data._id);
-  // });
+  // delete test data
 
-  // it('Should delete a species', async () => {
-  //   if (Array.isArray(speciesResponse.data)) {
-  //     return;
-  //   }
-  //   await deleteSpecies(app, speciesResponse.data._id);
-  // });
+  it('Should delete a category', async () => {
+    if (Array.isArray(categoryResponse.data)) {
+      return;
+    }
+    await deleteCategory(app, categoryResponse.data._id);
+  });
 
-  // it('Should delete an animal', async () => {
-  //   if (Array.isArray(animalResponse.data)) {
-  //     return;
-  //   }
-  //   await deleteAnimal(app, animalResponse.data._id);
-  // });
+  it('Should delete a species', async () => {
+    if (Array.isArray(speciesResponse.data)) {
+      return;
+    }
+    await deleteSpecies(app, speciesResponse.data._id);
+  });
+
+  it('Should delete an animal', async () => {
+    if (Array.isArray(animalResponse.data)) {
+      return;
+    }
+    await deleteAnimal(app, animalResponse.data._id);
+  });
 });

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {MessageResponse} from '../src/types/Messages';
 import {Express} from 'express';
 import request from 'supertest';
@@ -81,6 +82,7 @@ const postAnimal = (
         if (err) {
           reject(err);
         } else {
+          const message: string = response.body.message;
           const data: TestAnimal = response.body.data;
           expect(data._id).toBeDefined();
           expect(data.animal_name).toBe(animal_name);
@@ -108,6 +110,7 @@ const putAnimal = (
         if (err) {
           reject(err);
         } else {
+          const message: string = response.body.message;
           const data: TestAnimal = response.body.data;
           expect(data._id).toBeDefined();
           expect(data.animal_name).toBe(animal_name);

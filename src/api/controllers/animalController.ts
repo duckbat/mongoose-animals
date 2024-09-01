@@ -8,6 +8,7 @@ type DBMessageResponse = MessageResponse & {
   data: Animal | Animal[];
 };
 
+// Creating animal
 const postAnimal = async (
   req: Request<{}, {}, Animal>,
   res: Response<DBMessageResponse>,
@@ -26,6 +27,8 @@ const postAnimal = async (
   }
 };
 
+
+// Getting all animals
 const getAnimal = async (
   req: Request,
   res: Response<Animal[]>,
@@ -40,6 +43,8 @@ const getAnimal = async (
   }
 };
 
+
+// Getting single animal
 const getSingleAnimal = async (
   req: Request<{id: string}>,
   res: Response<Animal>,
@@ -58,6 +63,8 @@ const getSingleAnimal = async (
   }
 };
 
+
+// Updating animal
 const putAnimal = async (
   req: Request<{id: string}, {}, Animal>,
   res: Response<DBMessageResponse>,
@@ -83,6 +90,8 @@ const putAnimal = async (
   }
 };
 
+
+// Deleting animal
 const deleteAnimal = async (
   req: Request<{id: string}>,
   res: Response<DBMessageResponse>,
@@ -104,6 +113,8 @@ const deleteAnimal = async (
   }
 };
 
+
+// Getting animals by box (coordinates)
 const getAnimalsByBox = async (
   req: Request<{}, {}, {}, {topRight: string; bottomLeft: string}>,
   res: Response<Animal[]>,
@@ -126,6 +137,28 @@ const getAnimalsByBox = async (
   }
 };
 
+
+// Getting animals by species
+const getAnimalBySpecies = async (
+  req: Request<{species: string}>,
+  res: Response<Animal[]>,
+  next: NextFunction,
+) => {
+  try {
+    const {species} = req.params;
+
+    const animals = await AnimalModel.find({ species: species });
+
+    if (!animals.length){
+      return next(new CustomError('Animals not found', 404));
+    }
+
+    res.status(200).json(animals);
+  } catch (error) {
+    next(new CustomError((error as Error).message, 500));
+  }
+}
+
 export {
   postAnimal,
   getAnimal,
@@ -133,4 +166,5 @@ export {
   putAnimal,
   deleteAnimal,
   getAnimalsByBox,
+  getAnimalBySpecies,
 };

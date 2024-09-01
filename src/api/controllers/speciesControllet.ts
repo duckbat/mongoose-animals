@@ -83,6 +83,43 @@ const putSpecies = async (
   }
 };
 
+const getSpeciesByArea = async (
+  req: Request<{}, {}, {}, { firstPoint: string; secondPoint: string; thirdPoint: string; fourthPoint: string; fifthPoint: string; }>,
+  res: Response<Species[]>,
+  next: NextFunction,
+) => {
+  try {
+    const { firstPoint, secondPoint, thirdPoint, fourthPoint, fifthPoint } = req.query;
+
+    const coordinates = [
+      firstPoint.split(',').map(Number),
+      secondPoint.split(',').map(Number),
+      thirdPoint.split(',').map(Number),
+      fourthPoint.split(',').map(Number),
+      fifthPoint.split(',').map(Number),
+    ];
+
+    coordinates.push(coordinates[0]);
+
+    const species = await SpeciesModel.find({
+      location: {
+        $geoWithin: {
+          $geometry: {
+            type: 'Polygon',
+            coordinates: [coordinates],
+          },
+        },
+      },
+    });
+
+    res.json(species);
+  } catch (error) {
+    next(new CustomError((error as Error).message, 500));
+  }
+};
+
+
+
 const deleteSpecies = async (
   req: Request<{id: string}>,
   res: Response<DBMessageResponse>,
@@ -104,4 +141,4 @@ const deleteSpecies = async (
   }
 };
 
-export {postSpecies, getSpecies, getSingleSpecies, putSpecies, deleteSpecies};
+export {postSpecies, getSpecies, getSingleSpecies, putSpecies, getSpeciesByArea, deleteSpecies};
