@@ -3,7 +3,7 @@ import request from 'supertest';
 import {MessageResponse} from '../src/types/Messages';
 import {TestCategory} from './testTypes';
 
-// TODO: Add tests for the following:
+// Add tests for the following:
 // 1. Get all categories
 // 2. Get category by id
 // 3. Post category

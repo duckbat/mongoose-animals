@@ -4,7 +4,7 @@ import {Express} from 'express';
 import request from 'supertest';
 import {TestSpecies} from './testTypes';
 
-// TODO: Add tests for the following:
+// Add tests for the following:
 // 1. Get all species
 // 2. Get species by id
 // 3. Post species
